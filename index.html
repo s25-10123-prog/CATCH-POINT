@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -29,7 +30,7 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <!-- Firebase Compat 라이브러리 (비동기 모듈 에러를 물리적으로 예방하는 가장 확실한 설계) -->
+  <!-- Firebase Compat 라이브러리 (비동기 충돌 예방을 위해 안정적인 구버전 동기 전역 바인딩 스크립트 사용) -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -66,7 +67,7 @@
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
-    // 외부 에러 없는 안전한 인라인 SVG 아이콘 컴포넌트
+    // 외부 로딩 에러 없는 안전한 인라인 SVG 아이콘 컴포넌트
     const SvgIcon = ({ name, className = "w-5 h-5", ...props }) => {
       const icons = {
         "graduation-cap": (
@@ -261,7 +262,7 @@
       return icons[name] || null;
     };
 
-    // Firebase 초기화 진행
+    // Firebase 10.x 동기 런타임 활성화
     const firebaseConfig = {
       apiKey: "AIzaSyCNncvAHxoiL4HZE4ephrST0THGPmbLfnc",
       authDomain: "app123-9a3c9.firebaseapp.com",
@@ -379,7 +380,7 @@
       "의예과", "치의예과", "한의예과", "약학과", "간호학과", "수의예과", "임상병리학과", "물리치료학과",
       "국어국문학과", "영어영문학과", "중어중문학과", "불어불문학과", "독어독문학과", "사학과", "철학과", "고고인류학과", "언어학과",
       "경영학과", "경제학과", "정치외교학과", "행정학과", "사회학과", "심리학과", "미디어커뮤니케이션학과", "신문방송학과", "법학과", "사회복지학과", "지리학과", "문헌정보학과", "소비자학과",
-      "교육학과", "국어교육과", "영어교육과", "수학교육과", "역사교육과", "지리교육과", "물리교육과", "화학교yield과", "생물교육과", "초등교육과", "유아교육과", "특수교육과",
+      "교육학과", "국어교육과", "영어교육과", "수학교육과", "역사교육과", "지리교육과", "물리교육과", "화학교육과", "생물교육과", "초등교육과", "유아교육과", "특수교육과",
       "체육학과", "스포츠지도학과", "디자인학과", "회화과", "조소과", "작곡과", "성악과", "피아노과", "연극영화과"
     ];
 
@@ -881,7 +882,7 @@
         }
       };
 
-      // Canvas 그래프 렌더링 (렌더링 동기화를 보장하는 브라우저 프레임 렌더러 연계)
+      // Canvas 그래프 렌더링
       useEffect(() => {
         if (activeTab !== 'grades' || !canvasRef.current) return;
 
@@ -1186,7 +1187,7 @@
                 <div>
                   <label className="block text-xs font-extrabold text-slate-450 uppercase tracking-wider mb-2 ml-1">이메일 주소 / 계정 ID</label>
                   <div className="relative">
-                    <SvgIcon name="mail" className="absolute left-4 top-3.5 w-5 h-5 text-slate-300 dark:text-slate-660" />
+                    <SvgIcon name="mail" className="absolute left-4 top-3.5 w-5 h-5 text-slate-300 dark:text-slate-600" />
                     <input 
                       type="text" 
                       value={email} 
@@ -1202,7 +1203,7 @@
                   <div>
                     <label className="block text-xs font-extrabold text-slate-455 uppercase tracking-wider mb-2 ml-1">비밀번호</label>
                     <div className="relative">
-                      <SvgIcon name="lock" className="absolute left-4 top-3.5 w-5 h-5 text-slate-300 dark:text-slate-660" />
+                      <SvgIcon name="lock" className="absolute left-4 top-3.5 w-5 h-5 text-slate-300 dark:text-slate-600" />
                       <input 
                         type="password" 
                         value={password} 
@@ -1236,11 +1237,11 @@
               <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col items-center gap-3 text-xs font-semibold">
                 {view === 'login' ? (
                   <>
-                    <button onClick={() => { setView('signup'); setMessage({ type: '', text: '' }); }} className="text-blue-600 dark:text-blue-400 hover:underline">신규 가입하기</button>
-                    <button onClick={() => { setView('forgotPassword'); setMessage({ type: '', text: '' }); }} className="text-slate-400 hover:text-slate-300">비밀번호 찾기</button>
+                    <button onClick={() => { setView('signup'); setMessage({ type: '', text: '' }); }} className="text-blue-600 dark:text-blue-400 hover:underline">신규 계정 가입하기</button>
+                    <button onClick={() => { setView('forgotPassword'); setMessage({ type: '', text: '' }); }} className="text-slate-400 hover:text-slate-300">비밀번호를 분실하셨나요?</button>
                   </>
                 ) : (
-                  <button onClick={() => { setView('login'); setMessage({ type: '', text: '' }); }} className="text-blue-600 dark:text-blue-400 hover:underline">로그인으로 회귀</button>
+                  <button onClick={() => { setView('login'); setMessage({ type: '', text: '' }); }} className="text-blue-600 dark:text-blue-400 hover:underline">로그인 화면으로 돌아가기</button>
                 )}
               </div>
             </div>
@@ -1442,7 +1443,7 @@
                             onChange={e => setNewSubjectName(e.target.value)}
                             onKeyDown={e => e.key === 'Enter' && handleAddManualSubject()}
                             placeholder="예: 고급 수학, 창의 융합 과학"
-                            className="flex-1 px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-xs outline-none bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-900 placeholder:text-slate-355 dark:text-white"
+                            className="flex-1 px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-xs outline-none bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-900 placeholder:text-slate-350 dark:text-white"
                             maxLength={25}
                           />
                           <button onClick={handleAddManualSubject} className="px-5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors text-xs">등록</button>
@@ -1494,7 +1495,7 @@
                               {grade !== '1' && (
                                 <button 
                                   onClick={() => handleDeleteSubject(sub.id, sub.name)} 
-                                  className="text-slate-300 dark:text-slate-655 hover:text-red-500 transition-colors p-1"
+                                  className="text-slate-300 dark:text-slate-600 hover:text-red-500 transition-colors p-1"
                                   title="과목 삭제"
                                 >
                                   <SvgIcon name="trash-2" className="w-4 h-4" />
@@ -1630,7 +1631,7 @@
                             <SvgIcon name="trending-up" className="w-4.5 h-4.5" />
                           </div>
                         ) : trendAnalysis.icon === 'down' ? (
-                          <div className="w-8 h-8 rounded-full bg-red-100 dark:bg-red-950/40 flex items-center justify-center text-red-600">
+                          <div className="w-8 h-8 rounded-full bg-red-100 dark:bg-red-950/40 flex items-center justify-center text-red-650">
                             <SvgIcon name="trending-down" className="w-4.5 h-4.5" />
                           </div>
                         ) : (
@@ -1950,7 +1951,7 @@
                   <SvgIcon name="alert-circle" className="w-4 h-4 text-red-500" />
                   {modal.title}
                 </h4>
-                <p className="text-xs mt-2.5 font-semibold leading-relaxed text-slate-550">
+                <p className="text-xs mt-2.5 font-semibold leading-relaxed text-slate-555">
                   {modal.message}
                 </p>
                 <div className="flex gap-2.5 mt-5">
@@ -1977,3 +1978,5 @@
 
 </body>
 </html>
+
+```
