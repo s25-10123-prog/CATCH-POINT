@@ -30,7 +30,7 @@
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-  <!-- Firebase Compat 라이브러리 (안정적인 글로벌 전역 로딩 보장) -->
+  <!-- Firebase Compat 라이브러리 (비동기 모듈 에러를 물리적으로 예방하는 가장 확실한 설계) -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -61,14 +61,13 @@
 </head>
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-950 dark:text-slate-100 transition-colors duration-300">
 
-  <!-- React 앱이 마운트될 핵심 루트 노드 -->
   <div id="root"></div>
 
-  <!-- React 컴포넌트 소스 코드 실행 (Babel이 브라우저에서 직접 파싱) -->
+  <!-- React 컴포넌트 소스 코드 실행 -->
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
-    // 모듈 에러 없는 안전한 인라인 SVG 아이콘 컴포넌트
+    // 외부 에러 없는 안전한 인라인 SVG 아이콘 컴포넌트
     const SvgIcon = ({ name, className = "w-5 h-5", ...props }) => {
       const icons = {
         "graduation-cap": (
@@ -263,7 +262,7 @@
       return icons[name] || null;
     };
 
-    // Firebase 10.x 동기 런타임 활성화
+    // Firebase 초기화 진행
     const firebaseConfig = {
       apiKey: "AIzaSyCNncvAHxoiL4HZE4ephrST0THGPmbLfnc",
       authDomain: "app123-9a3c9.firebaseapp.com",
@@ -381,7 +380,7 @@
       "의예과", "치의예과", "한의예과", "약학과", "간호학과", "수의예과", "임상병리학과", "물리치료학과",
       "국어국문학과", "영어영문학과", "중어중문학과", "불어불문학과", "독어독문학과", "사학과", "철학과", "고고인류학과", "언어학과",
       "경영학과", "경제학과", "정치외교학과", "행정학과", "사회학과", "심리학과", "미디어커뮤니케이션학과", "신문방송학과", "법학과", "사회복지학과", "지리학과", "문헌정보학과", "소비자학과",
-      "교육학과", "국어교육과", "영어교육과", "수학교육과", "역사교육과", "지리교육과", "물리교육과", "화학교육과", "생물교육과", "초등교육과", "유아교육과", "특수교육과",
+      "교육학과", "국어교육과", "영어교육과", "수학교육과", "역사교육과", "지리교육과", "물리교육과", "화학교yield과", "생물교육과", "초등교육과", "유아교육과", "특수교육과",
       "체육학과", "스포츠지도학과", "디자인학과", "회화과", "조소과", "작곡과", "성악과", "피아노과", "연극영화과"
     ];
 
@@ -426,7 +425,7 @@
 
       const canvasRef = useRef(null);
 
-      // Auth 상태 감시자 세팅
+      // Auth 상태 변화 감시자 세팅
       useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((currentUser) => {
           setUser(currentUser);
@@ -883,7 +882,7 @@
         }
       };
 
-      // Canvas 그래프 렌더링
+      // Canvas 그래프 렌더링 (렌더링 동기화를 보장하는 브라우저 프레임 렌더러 연계)
       useEffect(() => {
         if (activeTab !== 'grades' || !canvasRef.current) return;
 
@@ -1188,7 +1187,7 @@
                 <div>
                   <label className="block text-xs font-extrabold text-slate-450 uppercase tracking-wider mb-2 ml-1">이메일 주소 / 계정 ID</label>
                   <div className="relative">
-                    <SvgIcon name="mail" className="absolute left-4 top-3.5 w-5 h-5 text-slate-300 dark:text-slate-600" />
+                    <SvgIcon name="mail" className="absolute left-4 top-3.5 w-5 h-5 text-slate-300 dark:text-slate-660" />
                     <input 
                       type="text" 
                       value={email} 
@@ -1204,7 +1203,7 @@
                   <div>
                     <label className="block text-xs font-extrabold text-slate-455 uppercase tracking-wider mb-2 ml-1">비밀번호</label>
                     <div className="relative">
-                      <SvgIcon name="lock" className="absolute left-4 top-3.5 w-5 h-5 text-slate-300 dark:text-slate-600" />
+                      <SvgIcon name="lock" className="absolute left-4 top-3.5 w-5 h-5 text-slate-300 dark:text-slate-660" />
                       <input 
                         type="password" 
                         value={password} 
@@ -1423,7 +1422,7 @@
                                   disabled={isAlreadyAdded}
                                   className={`px-3 py-1.5 text-xs font-bold rounded-lg border transition-all ${
                                     isAlreadyAdded 
-                                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-350 dark:text-slate-650 border-transparent cursor-not-allowed'
+                                      ? 'bg-slate-100 dark:bg-slate-800 text-slate-350 dark:text-slate-600 border-transparent cursor-not-allowed'
                                       : 'bg-white dark:bg-slate-850 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-300'
                                   }`}
                                 >
@@ -1444,11 +1443,11 @@
                             onChange={e => setNewSubjectName(e.target.value)}
                             onKeyDown={e => e.key === 'Enter' && handleAddManualSubject()}
                             placeholder="예: 고급 수학, 창의 융합 과학"
-                            className="flex-1 px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-xs outline-none bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-900 placeholder:text-slate-350 dark:text-white"
+                            className="flex-1 px-4 py-2.5 border rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-xs outline-none bg-slate-50 dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-900 placeholder:text-slate-355 dark:text-white"
                             maxLength={25}
                           />
                           <button onClick={handleAddManualSubject} className="px-5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors text-xs">등록</button>
-                          <button onClick={() => { setIsAddingSubject(false); setNewSubjectName(''); }} className="px-3 font-bold rounded-xl transition-all text-xs bg-slate-100 dark:bg-slate-800 text-slate-455">취소</button>
+                          <button onClick={() => { setIsAddingSubject(false); setNewSubjectName(''); }} className="px-3 font-bold rounded-xl transition-all text-xs bg-slate-100 dark:bg-slate-800 text-slate-400">취소</button>
                         </div>
                       </div>
                     </div>
@@ -1913,7 +1912,7 @@
                   <div className="space-y-2.5">
                     <div>
                       <h4 className="text-sm font-bold">글자 수 측정 기준 변경</h4>
-                      <p className="text-[11px] mt-0.5 text-slate-455">바이트 계산 모드를 켜거나 끌 수 있습니다.</p>
+                      <p className="text-[11px] mt-0.5 text-slate-450">바이트 계산 모드를 켜거나 끌 수 있습니다.</p>
                     </div>
                     <div className="grid grid-cols-2 gap-2 p-1 rounded-xl bg-slate-100 dark:bg-slate-800">
                       <button 
@@ -1970,7 +1969,7 @@
       );
     }
 
-    // 문서가 완전히 마운트된 직후에만 트랜스파일링된 React 앱을 렌더링하도록 지시
+    // 문서 구조 동기화 즉시 앱을 root 엘리먼트에 마운트
     window.addEventListener('DOMContentLoaded', () => {
       const root = ReactDOM.createRoot(document.getElementById('root'));
       root.render(<App />);
